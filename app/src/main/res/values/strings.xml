@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Pactter</string>
+
+    <!-- MainActivity   -->
+    <string name="navigation_menu_home">Home</string>
+    <string name="navigation_menu_search">Search</string>
+    <string name="navigation_menu_notification">Notification</string>
+    <string name="navigation_menu_mail">Mail</string>
+    <string name="fab_desc">add Pac</string>
+</resources>
