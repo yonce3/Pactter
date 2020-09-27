@@ -7,4 +7,8 @@
     <string name="navigation_menu_notification">Notification</string>
     <string name="navigation_menu_mail">Mail</string>
     <string name="fab_desc">add Pac</string>
+
+    <!-- addPacActivity   -->
+    <string name="add_pac_hint">What are you doing now?</string>
+    <string name="add_pac">Pac</string>
 </resources>

@@ -40,13 +40,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_action_button"
+            android:id="@+id/add_pac_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
             android:contentDescription="@string/fab_desc"
-            app:srcCompat="@drawable/ic_plus_24"/>
+            app:srcCompat="@mipmap/outline_add_white_36"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
