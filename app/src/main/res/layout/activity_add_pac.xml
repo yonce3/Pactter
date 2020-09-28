@@ -7,6 +7,7 @@
     tools:context=".ui.AddPacActivity">
 
     <LinearLayout
+        android:id="@+id/pac_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -14,10 +15,13 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/buck_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/outline_add_white_36"
-            android:layout_weight="0.1"/>
+            android:src="@mipmap/outline_clear_black_36"
+            android:layout_weight="0.1"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp" />
 
         <View
             android:layout_width="0dp"
@@ -25,10 +29,11 @@
             android:layout_weight="0.8" />
 
         <Button
-            android:id="@+id/add_pac"
+            android:id="@+id/add_pac_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_pac"
+            android:textSize="20dp"
             android:layout_weight="0.1"
             android:background="@color/colorAccent"
             android:textColor="@android:color/white"
@@ -36,23 +41,24 @@
     </LinearLayout>
 
     <LinearLayout
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pac_bar"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
 
         <ImageView
             android:id="@+id/image_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/outline_add_white_36"/>
+            android:src="@mipmap/outline_clear_black_36"/>
 
         <EditText
             android:hint="@string/add_pac_hint"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="#00000000"/>
 
     </LinearLayout>
 

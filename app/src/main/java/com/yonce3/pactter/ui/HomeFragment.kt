@@ -1,4 +1,4 @@
-package com.yonce3.pactter.viewModel
+package com.yonce3.pactter.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.yonce3.pactter.R
-import com.yonce3.pactter.ui.HomeViewModel
+import com.yonce3.pactter.viewModel.HomeViewModel
 
 class HomeFragment : Fragment() {
 

@@ -3,12 +3,10 @@ package com.yonce3.pactter.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.room.Room
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
 import com.yonce3.pactter.data.AppDatabase
-import com.yonce3.pactter.viewModel.HomeFragment
 
 class MainActivity : AppCompatActivity() {
     lateinit var floatingAddButton: FloatingActionButton
@@ -29,6 +27,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // TODO: あとで削除
         var db = Room.databaseBuilder(
             this, AppDatabase::class.java, "database-name").build()
         db.userDao()

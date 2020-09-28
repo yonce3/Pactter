@@ -1,4 +1,4 @@
-package com.yonce3.pactter.ui
+package com.yonce3.pactter.viewModel
 
 import androidx.lifecycle.ViewModel
 
