@@ -8,8 +8,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import com.yonce3.pactter.R
+import com.yonce3.pactter.viewModel.AddPacViewModel
 
 class AddPacActivity : AppCompatActivity() {
+
+    companion object {
+        fun newInstance() = AddPacViewModel()
+    }
 
     lateinit var addPacButton: Button
     lateinit var backButton: ImageView

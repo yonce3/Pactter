@@ -51,15 +51,19 @@ class MainActivity : AppCompatActivity() {
             R.id.home -> {
                 // TODO: fragmentを表示
                 println("home")
+                floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
                 true
             }
             R.id.search -> {
+                floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
                 true
             }
             R.id.notification -> {
+                floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
                 true
             }
             R.id.mail -> {
+                floatingAddButton.setImageResource(R.mipmap.ic_launcher_round)
                 true
             }
             else -> false
