@@ -11,7 +11,7 @@ interface UserDao {
     @Query("SELECT * FROM user")
     fun getAll(): List<User>
 
-    @Query("SELECT name FROM user")
+    @Query("SELECT * FROM user WHERE name LIKE :name")
     fun findUsersByName(name: String): List<User>
 
     @Insert

@@ -3,8 +3,6 @@ package com.yonce3.pactter.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toolbar
 import androidx.room.Room
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -14,7 +12,6 @@ import com.yonce3.pactter.data.AppDatabase
 class MainActivity : AppCompatActivity() {
     lateinit var floatingAddButton: FloatingActionButton
     lateinit var bottomNavigation: BottomNavigationView
-    lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,22 +44,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val onBottomNavigationClick = BottomNavigationView.OnNavigationItemSelectedListener {
+        val transaction = supportFragmentManager.beginTransaction()
         when (it.itemId) {
             R.id.home -> {
                 // TODO: fragmentを表示
-                println("home")
+                transaction.add(R.id.fragment_container, HomeFragment())
+                transaction.commit()
                 floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
                 true
             }
             R.id.search -> {
+//                transaction.add(R.id.fragment_container, SearchFragment())
+//                transaction.commit()
                 floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
                 true
             }
             R.id.notification -> {
+//                transaction.add(R.id.fragment_container, SearchFragment())
+//                transaction.commit()
                 floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
                 true
             }
             R.id.mail -> {
+//                transaction.add(R.id.fragment_container, SearchFragment())
+//                transaction.commit()
                 floatingAddButton.setImageResource(R.mipmap.ic_launcher_round)
                 true
             }

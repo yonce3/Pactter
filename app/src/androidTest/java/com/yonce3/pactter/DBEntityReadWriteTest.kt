@@ -1,11 +1,8 @@
 package com.yonce3.pactter
 
-import android.app.Application
 import android.content.Context
-import androidx.room.Room
 import androidx.room.Room.inMemoryDatabaseBuilder
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.core.content.pm.ApplicationInfoBuilder
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.yonce3.pactter.data.AppDatabase
 import com.yonce3.pactter.data.Dao.UserDao
@@ -39,7 +36,7 @@ class DBEntityReadWriteTest {
     @Test
     @Throws(Exception::class)
     fun writeUserAndReadInList() {
-        val user: User = TestUtil.createUser(3, "george")
+        val user = User(userId = 0, name="george")
         userDao.insert(user)
         val byName = userDao.findUsersByName("george")
         assertThat(byName.get(0), equalTo(user))

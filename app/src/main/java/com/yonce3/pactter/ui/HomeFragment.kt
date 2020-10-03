@@ -13,10 +13,6 @@ import com.yonce3.pactter.viewModel.HomeViewModel
 
 class HomeFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = HomeFragment()
-    }
-
     private lateinit var viewModel: HomeViewModel
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
