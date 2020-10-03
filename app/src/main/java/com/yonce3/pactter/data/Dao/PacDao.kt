@@ -14,6 +14,9 @@ interface PacDao {
     @Insert
     fun insertAll(vararg pacs: Pac)
 
+    @Insert
+    fun insert(pac: Pac)
+
     @Delete
     fun delete(pac: Pac)
 }

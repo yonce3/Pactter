@@ -7,8 +7,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.yonce3.pactter.PacListViewAdapter
 import com.yonce3.pactter.R
+import com.yonce3.pactter.data.AppDatabase
 import com.yonce3.pactter.viewModel.HomeViewModel
 
 class HomeFragment : Fragment() {
@@ -34,9 +36,14 @@ class HomeFragment : Fragment() {
         // TODO: Use the ViewModel
         setHasOptionsMenu(true)
 
+        // TODO: あとで削除
+        var db = Room.databaseBuilder(
+            activity!!.applicationContext, AppDatabase::class.java, "database-name").build()
+
         // リストビューの作成
         layoutManager = LinearLayoutManager(activity)
-        viewAdapter = PacListViewAdapter(listOf())
+
+        viewAdapter = PacListViewAdapter(db.pacDao().getAll())
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView).also {
             it.layoutManager = layoutManager
             it.adapter = viewAdapter

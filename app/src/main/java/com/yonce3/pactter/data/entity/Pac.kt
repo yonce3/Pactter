@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Pac (
-    @PrimaryKey val pacId: Int,
+    @PrimaryKey(autoGenerate = true) val pacId: Int,
     @ColumnInfo(name = "content") val content: String?,
 )
