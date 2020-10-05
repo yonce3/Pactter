@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         // toolbarの設定
         setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.title = ""
 
         // homeのフラグメントを追加
         val homeFragment = HomeFragment()
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         when (it.itemId) {
             R.id.home -> {
                 // TODO: fragmentを表示
-                transaction.add(R.id.fragment_container, HomeFragment())
+                transaction.replace(R.id.fragment_container, HomeFragment())
                 transaction.commit()
                 floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
                 true
