@@ -55,5 +55,9 @@
             android:contentDescription="@string/fab_desc"
             app:srcCompat="@mipmap/outline_add_white_36"/>
     </LinearLayout>
+    
+<!--    <androidx.drawerlayout.widget.DrawerLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
