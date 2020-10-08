@@ -4,13 +4,16 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.room.Room
@@ -31,7 +34,7 @@ class AddPacActivity : AppCompatActivity() {
     lateinit var pacText: EditText
     lateinit var cameraButton: FloatingActionButton
     val REQUEST_IMAGE_CAPTURE = 1
-    val REQUEST_PERMISSION = 2
+    val REQUEST_CAMERA_PERMISSION = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,11 +69,28 @@ class AddPacActivity : AppCompatActivity() {
 
         cameraButton = findViewById(R.id.camera_button)
         cameraButton.setOnClickListener {
-            val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            val cameraPermission =
+                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            val cameraRationale = ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.CAMERA
+            )
             if (cameraPermission == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
+            } else if (cameraRationale) {
+                AlertDialog.Builder(this)
+                    .setMessage("デバイスの「設定」でカメラの権限を許可してください。")
+                    .setPositiveButton("OK") { _, _ ->
+                        // TODO: アプリの設定画面に遷移
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:com.yonce3.pactter"))
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
+                    .setNegativeButton("キャンセル") {_, _ -> }
+                    .create().show()
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION) // REQUEST_PERMISSION は定数
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSION)
             }
         }
     }
@@ -84,6 +104,15 @@ class AddPacActivity : AppCompatActivity() {
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCamera()
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun startCamera() {
