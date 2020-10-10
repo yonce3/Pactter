@@ -4,15 +4,18 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -33,6 +36,7 @@ class AddPacActivity : AppCompatActivity() {
     lateinit var backButton: ImageView
     lateinit var pacText: EditText
     lateinit var cameraButton: FloatingActionButton
+    lateinit var photo: ImageView
     val REQUEST_IMAGE_CAPTURE = 1
     val REQUEST_CAMERA_PERMISSION = 2
 
@@ -44,20 +48,6 @@ class AddPacActivity : AppCompatActivity() {
         var db = Room.databaseBuilder(
             this, AppDatabase::class.java, "database-name").build()
 
-        addPacButton = findViewById(R.id.add_pac_button)
-        addPacButton.setOnClickListener {
-            // DBに保存
-            db.pacDao().insert(Pac(0, pacText.text.toString()))
-            db.pacDao().insert(Pac(1, pacText.text.toString()))
-
-            finish()
-        }
-
-        backButton = findViewById(R.id.buck_button)
-        backButton.setOnClickListener {
-            finish()
-        }
-
         pacText = findViewById(R.id.edit_text)
         // pacText.requestFocus()
         // TODO: 画面を開いたタイミングで、Edittextにフォーカス&キーボードが表示されるようにしたい
@@ -66,6 +56,27 @@ class AddPacActivity : AppCompatActivity() {
         inputMethodManager.hideSoftInputFromWindow(pacText.windowToken, 0)
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS)
         //inputMethodManager.showSoftInput(pacText, 0)
+
+        // imageView
+        photo = findViewById(R.id.pac_image)
+
+        addPacButton = findViewById(R.id.add_pac_button)
+        addPacButton.setOnClickListener {
+            // DBに保存
+            if (pacText.text.isNotBlank()) {
+                db.pacDao().insert(Pac(0, pacText.text.toString(), ""))
+                db.pacDao().insert(Pac(1, pacText.text.toString(), ""))
+
+                finish()
+            } else {
+                Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        backButton = findViewById(R.id.buck_button)
+        backButton.setOnClickListener {
+            finish()
+        }
 
         cameraButton = findViewById(R.id.camera_button)
         cameraButton.setOnClickListener {
@@ -99,7 +110,10 @@ class AddPacActivity : AppCompatActivity() {
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 REQUEST_IMAGE_CAPTURE -> {
-                    // TODO: 撮影したDataを受け取る
+                    // TODO: フルサイズの画像を取得する方法
+                    val imageBitmap = data?.extras?.get("data") as Bitmap
+                    photo.setImageBitmap(imageBitmap)
+                    photo.visibility = View.VISIBLE
                 }
             }
         }

@@ -49,8 +49,8 @@ class HomeFragment : Fragment(), PacListViewAdapter.OnItemClickListener {
         // リストビューの作成
         layoutManager = LinearLayoutManager(activity)
 
-        val pac = Pac(pacId = 0, content = "あああ")
-        val pac2 = Pac(pacId = 1, content = "良いい")
+        val pac = Pac(pacId = 0, content = "あああ", "")
+        val pac2 = Pac(pacId = 1, content = "良いい", "")
         // viewAdapter = PacListViewAdapter(db.pacDao().getAll())
         viewAdapter = PacListViewAdapter(listOf(pac, pac2))
         viewAdapter.setOnItemClickListener(object: PacListViewAdapter.OnItemClickListener{

@@ -11,4 +11,5 @@
     <!-- addPacActivity   -->
     <string name="add_pac_hint">what is up</string>
     <string name="add_pac">Pac</string>
+    <string name="input_text_alert">文章を入力してください。</string>
 </resources>
