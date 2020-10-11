@@ -65,6 +65,7 @@ class HomeFragment : Fragment(), PacListViewAdapter.OnItemClickListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
         inflater.inflate(R.menu.home_fragment_menu, menu)
     }
 

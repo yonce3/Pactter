@@ -1,4 +1,4 @@
-package com.yonce3.pactter
+package com.yonce3.pactter.testUtil
 
 import com.yonce3.pactter.data.entity.User
 
