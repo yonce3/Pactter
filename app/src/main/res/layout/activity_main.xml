@@ -55,6 +55,22 @@
             android:contentDescription="@string/fab_desc"
             app:srcCompat="@mipmap/outline_add_white_36"/>
     </LinearLayout>
+
+    <LinearLayout
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:visibility="gone"
+            android:id="@+id/direct_message_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/fab_desc"
+            app:srcCompat="@mipmap/mail_black_24"/>
+    </LinearLayout>
     
 <!--    <androidx.drawerlayout.widget.DrawerLayout-->
 <!--        android:layout_width="wrap_content"-->

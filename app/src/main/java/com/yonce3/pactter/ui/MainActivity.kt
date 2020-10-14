@@ -11,30 +11,31 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
 import com.yonce3.pactter.data.AppDatabase
+import com.yonce3.pactter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var floatingAddButton: FloatingActionButton
-    lateinit var bottomNavigation: BottomNavigationView
+    lateinit var floatingDmButton: FloatingActionButton
 
-    lateinit var homeFragment: HomeFragment
-    lateinit var searchFragment: SearchFragment
+    private lateinit var binding: ActivityMainBinding
+
+    val homeFragment =  HomeFragment()
+    val searchFragment =  SearchFragment()
     lateinit var transaction: FragmentTransaction
     // lateinit var notificationFragment: NotificationFragment
     // lateinit var
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         // toolbarの設定
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.title = ""
         // TODO: toolbarにアイコンを設定する方法
         // supportActionBar?.setLogo(R.mipmap.outline_clear_black_36)
-
-        // フラグメントを追加
-        homeFragment = HomeFragment()
-        searchFragment = SearchFragment()
 
         val fragmentList = listOf<Fragment>(homeFragment, searchFragment)
         fragmentList.map {
@@ -49,15 +50,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Pac追加ボタン
-        floatingAddButton = findViewById(R.id.add_pac_button)
+        floatingAddButton = binding.addPacButton
         floatingAddButton.setOnClickListener {
             val intent = Intent(this, AddPacActivity::class.java)
             startActivity(intent)
         }
 
+        // directMessageButton = findViewById(
+
         // bottomNavigation
-        bottomNavigation = findViewById(R.id.bottom_navigation)
-        bottomNavigation.setOnNavigationItemSelectedListener(onBottomNavigationClick)
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(onBottomNavigationClick)
 
         // TODO: あとで削除
         var db = Room.databaseBuilder(
@@ -79,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 //
 //                transaction.add(R.id.fragment_container, HomeFragment())
 //                transaction.commit()
-//                floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
+                floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
                 true
             }
             R.id.search -> {
@@ -92,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
 //                transaction.add(R.id.fragment_container, SearchFragment())
 //                transaction.commit()
-//                floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
+                floatingAddButton.setImageResource(R.mipmap.outline_add_white_36)
                 true
             }
             R.id.notification -> {
