@@ -77,6 +77,8 @@ class AddPacActivity : AppCompatActivity() {
                 db.pacDao().insert(Pac(0, pacText.text.toString(), ""))
                 db.pacDao().insert(Pac(1, pacText.text.toString(), ""))
 
+                // TODO: リストを表示するときは、リモートのDBの画像のパス
+                newInstance().addPac(Pac(3, pacText.text.toString(), currentPhotoPath))
                 finish()
             } else {
                 Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()
