@@ -1,42 +1,58 @@
-package (
+package com.yonce3.pactter.data
 
 import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteDatabase
-import androidx.sqlite.db.SupportSQLiteOpenHelper
-
-)com.yonce3.pactter.data
 
 import android.content.Context
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.yonce3.pactter.data.Dao.PacDao
 import com.yonce3.pactter.data.Dao.UserDao
 import com.yonce3.pactter.data.entity.Pac
 import com.yonce3.pactter.data.entity.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Database(entities = arrayOf(User::class, Pac::class), version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun pacDao(): PacDao
 
-    private fun buildDataBase(appContext: Context): AppDatabase {
-            return Room.databaseBuilder(appContext, AppDatabase::class.java, "database-name")
-                .addCallback(object : Callback() {
-                    override fun onCreate(db: SupportSQLiteDatabase) {
-                        super.onCreate(db)
-                    }
-                } {
+    companion object {
+        // Singleton prevents multiple instances of database opening at the
+        // same time.
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
 
-                })
+        fun getDatabase(context: Context, scope: CoroutineScope): AppDatabase {
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
+            }
+            synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "app_database"
+                ).build()
+                INSTANCE = instance
+                return instance
+            }
+        }
     }
 
-    override fun createOpenHelper(config: DatabaseConfiguration?): SupportSQLiteOpenHelper {
-        TODO("Not yet implemented")
-    }
+    private class AppDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
-    override fun createInvalidationTracker(): InvalidationTracker {
-        TODO("Not yet implemented")
-    }
+        override fun onOpen(db: SupportSQLiteDatabase) {
+            super.onOpen(db)
+            INSTANCE?.let { database ->
+                scope.launch {
+                    populateDatabase(database.pacDao())
+                }
+            }
+        }
 
-    override fun clearAllTables() {
-        TODO("Not yet implemented")
+        suspend fun populateDatabase(pacDao: PacDao) {
+
+            // TODO: Add your own words!
+        }
     }
 }

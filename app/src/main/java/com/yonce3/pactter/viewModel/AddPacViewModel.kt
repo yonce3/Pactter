@@ -1,20 +1,27 @@
 package com.yonce3.pactter.viewModel
 
-import androidx.lifecycle.ViewModel
-import androidx.room.Room
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.yonce3.pactter.data.AppDatabase
 import com.yonce3.pactter.data.entity.Pac
 import com.yonce3.pactter.data.entity.User
 import com.yonce3.pactter.repository.AddPacRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class AddPacViewModel : ViewModel() {
+class AddPacViewModel(application: Application) : AndroidViewModel(application) {
 
-    companion object {
-        val newInstance = AddPacRepository()
+    private val repository: AddPacRepository
+
+    init {
+        val pacDao = AppDatabase.getDatabase(application, viewModelScope).pacDao()
+        repository = AddPacRepository(pacDao)
+
     }
 
-    fun addPac(pac: Pac) {
-        newInstance.addPac()
+    fun insert(pac: Pac) = viewModelScope.launch (Dispatchers.IO){
+        repository.insertPac(pac)
     }
 
     fun getPacCount(user: User) {

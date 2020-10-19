@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.yonce3.pactter.PacListViewAdapter
 import com.yonce3.pactter.R
 import com.yonce3.pactter.data.AppDatabase
 import com.yonce3.pactter.data.entity.Pac
+import com.yonce3.pactter.viewModel.AddPacViewModel
 import com.yonce3.pactter.viewModel.HomeViewModel
 
 class HomeFragment : Fragment(), PacListViewAdapter.OnItemClickListener {
@@ -38,7 +40,6 @@ class HomeFragment : Fragment(), PacListViewAdapter.OnItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider.NewInstanceFactory().create(HomeViewModel::class.java)
         // TODO: Use the ViewModel
         setHasOptionsMenu(true)
 
@@ -49,14 +50,22 @@ class HomeFragment : Fragment(), PacListViewAdapter.OnItemClickListener {
         // リストビューの作成
         layoutManager = LinearLayoutManager(activity)
 
-        val pac = Pac(pacId = 0, content = "あああ", "")
-        val pac2 = Pac(pacId = 1, content = "良いい", "")
+//        val pac = Pac(pacId = 0, content = "あああ", "")
+//        val pac2 = Pac(pacId = 1, content = "良いい", "")
         // viewAdapter = PacListViewAdapter(db.pacDao().getAll())
-        viewAdapter = PacListViewAdapter(listOf(pac, pac2))
+        // viewAdapter = PacListViewAdapter(listOf(pac, pac2))
+        viewAdapter = PacListViewAdapter(context!!)
         viewAdapter.setOnItemClickListener(object: PacListViewAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int, clickedText: String) {
                 Toast.makeText(activity!!.applicationContext, "${clickedText}がタップされました", Toast.LENGTH_LONG).show()
             }
+        })
+
+        viewModel = activity?.run {
+            ViewModelProvider.AndroidViewModelFactory(application).create(HomeViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+        viewModel.allPacs.observe(viewLifecycleOwner, Observer { it ->
+            it?.let { viewAdapter.setPacs(it) }
         })
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView).also {
             it.layoutManager = layoutManager

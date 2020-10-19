@@ -1,15 +1,13 @@
 package com.yonce3.pactter.data.Dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.yonce3.pactter.data.entity.Pac
 
 @Dao
 interface PacDao {
     @Query("SELECT * FROM pac")
-    fun getAll(): List<Pac>
+    fun getAll(): LiveData<List<Pac>>
 
     @Insert
     fun insertAll(vararg pacs: Pac)

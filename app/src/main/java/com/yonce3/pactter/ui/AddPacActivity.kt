@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -23,10 +22,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.room.Room
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
-import com.yonce3.pactter.data.AppDatabase
 import com.yonce3.pactter.data.entity.Pac
 import com.yonce3.pactter.viewModel.AddPacViewModel
 import java.io.File
@@ -38,7 +36,6 @@ class AddPacActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "AddPacActivity"
-        fun newInstance() = AddPacViewModel()
     }
 
     lateinit var addPacButton: Button
@@ -49,14 +46,13 @@ class AddPacActivity : AppCompatActivity() {
     val REQUEST_IMAGE_CAPTURE = 1
     val REQUEST_CAMERA_PERMISSION = 2
     lateinit var currentPhotoPath: String
+    private lateinit var addPacViewModel: AddPacViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pac)
 
-        // TODO: あとで削除
-        var db = Room.databaseBuilder(
-            this, AppDatabase::class.java, "database-name").build()
+        addPacViewModel = ViewModelProvider.AndroidViewModelFactory(application).create(AddPacViewModel::class.java)
 
         pacText = findViewById(R.id.edit_text)
         // pacText.requestFocus()
@@ -74,11 +70,11 @@ class AddPacActivity : AppCompatActivity() {
         addPacButton.setOnClickListener {
             // DBに保存
             if (pacText.text.isNotBlank()) {
-                db.pacDao().insert(Pac(0, pacText.text.toString(), ""))
-                db.pacDao().insert(Pac(1, pacText.text.toString(), ""))
+//                db.pacDao().insert(Pac(0, pacText.text.toString(), ""))
+//                db.pacDao().insert(Pac(1, pacText.text.toString(), ""))
 
                 // TODO: リストを表示するときは、リモートのDBの画像のパス
-                newInstance().addPac(Pac(3, pacText.text.toString(), currentPhotoPath))
+                addPacViewModel.insert(Pac(0, pacText.text.toString(), ""))
                 finish()
             } else {
                 Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()

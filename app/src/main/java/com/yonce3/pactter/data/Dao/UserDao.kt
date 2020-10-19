@@ -1,25 +1,23 @@
 package com.yonce3.pactter.data.Dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.yonce3.pactter.data.entity.User
 
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
-    fun getAll(): List<User>
+    fun getAll(): LiveData<User>
 
     @Query("SELECT * FROM user WHERE name LIKE :name")
-    fun findUsersByName(name: String): List<User>
+    fun findUsersByName(name: String): LiveData<User>
 
     @Insert
     fun insertAll(vararg users: User)
 
-    @Insert
-    fun insert(user: User)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(user: User)
 
     @Delete
-    fun delete(user: User)
+    suspend fun delete(user: User)
 }
