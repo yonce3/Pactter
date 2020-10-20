@@ -3,14 +3,11 @@ package com.yonce3.pactter.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.room.Room
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
-import com.yonce3.pactter.data.AppDatabase
 import com.yonce3.pactter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -60,11 +57,6 @@ class MainActivity : AppCompatActivity() {
 
         // bottomNavigation
         binding.bottomNavigation.setOnNavigationItemSelectedListener(onBottomNavigationClick)
-
-        // TODO: あとで削除
-        var db = Room.databaseBuilder(
-            this, AppDatabase::class.java, "database-name").build()
-        db.userDao()
     }
 
     private val onBottomNavigationClick = BottomNavigationView.OnNavigationItemSelectedListener {

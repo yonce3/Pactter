@@ -20,7 +20,7 @@ class AddPacViewModel(application: Application) : AndroidViewModel(application) 
 
     }
 
-    fun insert(pac: Pac) = viewModelScope.launch (Dispatchers.IO){
+    fun insert(pac: Pac) = viewModelScope.launch (Dispatchers.IO) {
         repository.insertPac(pac)
     }
 

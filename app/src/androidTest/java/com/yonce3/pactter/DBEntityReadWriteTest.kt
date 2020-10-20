@@ -7,6 +7,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.yonce3.pactter.data.AppDatabase
 import com.yonce3.pactter.data.Dao.UserDao
 import com.yonce3.pactter.data.entity.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.After
 import org.junit.Assert.assertThat
@@ -14,6 +16,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import kotlin.coroutines.coroutineContext
 
 @RunWith(AndroidJUnit4::class)
 class DBEntityReadWriteTest {

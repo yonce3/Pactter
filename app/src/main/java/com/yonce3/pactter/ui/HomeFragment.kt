@@ -1,5 +1,6 @@
 package com.yonce3.pactter.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -40,24 +41,17 @@ class HomeFragment : Fragment(), PacListViewAdapter.OnItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
         setHasOptionsMenu(true)
-
-        // TODO: あとで削除
-        var db = Room.databaseBuilder(
-            activity!!.applicationContext, AppDatabase::class.java, "database-name").build()
 
         // リストビューの作成
         layoutManager = LinearLayoutManager(activity)
-
-//        val pac = Pac(pacId = 0, content = "あああ", "")
-//        val pac2 = Pac(pacId = 1, content = "良いい", "")
-        // viewAdapter = PacListViewAdapter(db.pacDao().getAll())
-        // viewAdapter = PacListViewAdapter(listOf(pac, pac2))
         viewAdapter = PacListViewAdapter(context!!)
         viewAdapter.setOnItemClickListener(object: PacListViewAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int, clickedText: String) {
                 Toast.makeText(activity!!.applicationContext, "${clickedText}がタップされました", Toast.LENGTH_LONG).show()
+
+                val intent = Intent(activity, PacDetailActivity::class.java)
+                startActivity(intent)
             }
         })
 
@@ -67,9 +61,12 @@ class HomeFragment : Fragment(), PacListViewAdapter.OnItemClickListener {
         viewModel.allPacs.observe(viewLifecycleOwner, Observer { it ->
             it?.let { viewAdapter.setPacs(it) }
         })
+
+        val divider = androidx.recyclerview.widget.DividerItemDecoration(context, LinearLayoutManager(activity).orientation)
         recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView).also {
             it.layoutManager = layoutManager
             it.adapter = viewAdapter
+            it.addItemDecoration(divider)
         }
     }
 
