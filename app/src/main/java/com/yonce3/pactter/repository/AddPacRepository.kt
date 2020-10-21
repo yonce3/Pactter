@@ -12,5 +12,8 @@ class AddPacRepository(private val pacDao: PacDao) {
         pacDao.insert(pac)
     }
 
+    suspend fun findPacWithId(pacId: Int): LiveData<Pac> {
+        return pacDao.findPacWithId(pacId)
+    }
 
 }

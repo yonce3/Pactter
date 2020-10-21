@@ -25,7 +25,7 @@ class PacListViewAdapter(context: Context) : RecyclerView.Adapter<PacListViewAda
     override fun onBindViewHolder(holder: PacListViewHolder, position: Int) {
         holder.pacContent.text = pacs[position].content
         holder.itemView.setOnClickListener {
-            listener.onItemClick(it, position, pacs[position].createdAt)
+            listener.onItemClick(it, position, pacs[position].pacId)
         }
     }
 
@@ -38,7 +38,7 @@ class PacListViewAdapter(context: Context) : RecyclerView.Adapter<PacListViewAda
 
     //インターフェースの作成
     interface OnItemClickListener {
-        fun onItemClick(view: View, position: Int, clickedText: String)
+        fun onItemClick(view: View, position: Int, pacId: Int)
     }
 
     // リスナー

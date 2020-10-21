@@ -17,7 +17,6 @@ class AddPacViewModel(application: Application) : AndroidViewModel(application) 
     init {
         val pacDao = AppDatabase.getDatabase(application, viewModelScope).pacDao()
         repository = AddPacRepository(pacDao)
-
     }
 
     fun insert(pac: Pac) = viewModelScope.launch (Dispatchers.IO) {

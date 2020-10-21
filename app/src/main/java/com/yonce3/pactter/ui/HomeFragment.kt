@@ -15,16 +15,22 @@ import com.yonce3.pactter.PacListViewAdapter
 import com.yonce3.pactter.R
 import com.yonce3.pactter.data.AppDatabase
 import com.yonce3.pactter.data.entity.Pac
+import com.yonce3.pactter.util.REQUEST_PAC_DETAIL
 import com.yonce3.pactter.viewModel.AddPacViewModel
 import com.yonce3.pactter.viewModel.HomeViewModel
 
-class HomeFragment : Fragment(), PacListViewAdapter.OnItemClickListener {
+class HomeFragment : Fragment() {
 
-    private lateinit var viewModel: HomeViewModel
     private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: PacListViewAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
+
+    private val viewModel: HomeViewModel by lazy {
+        activity?.run {
+            ViewModelProvider.AndroidViewModelFactory(application).create(HomeViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,17 +53,15 @@ class HomeFragment : Fragment(), PacListViewAdapter.OnItemClickListener {
         layoutManager = LinearLayoutManager(activity)
         viewAdapter = PacListViewAdapter(context!!)
         viewAdapter.setOnItemClickListener(object: PacListViewAdapter.OnItemClickListener{
-            override fun onItemClick(view: View, position: Int, clickedText: String) {
-                Toast.makeText(activity!!.applicationContext, "${clickedText}がタップされました", Toast.LENGTH_LONG).show()
+            override fun onItemClick(view: View, position: Int, pacId: Int) {
+                Toast.makeText(activity!!.applicationContext, "${pacId}がタップされました", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(activity, PacDetailActivity::class.java)
-                startActivity(intent)
+                intent.putExtra("pacId", pacId)
+                startActivityForResult(intent, REQUEST_PAC_DETAIL)
             }
         })
 
-        viewModel = activity?.run {
-            ViewModelProvider.AndroidViewModelFactory(application).create(HomeViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
         viewModel.allPacs.observe(viewLifecycleOwner, Observer { it ->
             it?.let { viewAdapter.setPacs(it) }
         })
@@ -80,9 +84,5 @@ class HomeFragment : Fragment(), PacListViewAdapter.OnItemClickListener {
             R.id.search -> true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onItemClick(view: View, position: Int, clickedText: String) {
-        println("テスト")
     }
 }

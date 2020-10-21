@@ -9,6 +9,9 @@ interface PacDao {
     @Query("SELECT * FROM pac")
     fun getAll(): LiveData<List<Pac>>
 
+    @Query("SELECT * FROM pac WHERE pacId = :pacId")
+    fun findPacWithId(pacId: Int): LiveData<Pac>
+
     @Insert
     fun insertAll(vararg pacs: Pac)
 
