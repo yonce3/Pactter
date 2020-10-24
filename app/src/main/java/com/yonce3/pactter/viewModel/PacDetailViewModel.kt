@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class PacDetailViewModel(application: Application, pacId: Int) : AndroidViewModel(application) {
 
     private lateinit var repository: AddPacRepository
-    private var pac: LiveData<Pac> = MutableLiveData<Pac>()
+    var pac: LiveData<Pac> = MutableLiveData<Pac>()
 
     init {
         val pacDao = AppDatabase.getDatabase(application, viewModelScope).pacDao()
@@ -19,9 +19,13 @@ class PacDetailViewModel(application: Application, pacId: Int) : AndroidViewMode
         repository = AddPacRepository(pacDao)
     }
 
-    class ViewModelFactory(application: Application, pacId: Int): ViewModelProvider.AndroidViewModelFactory(application) {
+    class ViewModelFactory(private val application: Application, private val pacId: Int): ViewModelProvider.AndroidViewModelFactory(application) {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return super.create(modelClass)
+            return when(modelClass) {
+                PacDetailViewModel::class.java -> PacDetailViewModel(application, pacId)
+
+                else -> throw IllegalArgumentException("Unknown ViewModel class")
+            } as T
         }
     }
 }

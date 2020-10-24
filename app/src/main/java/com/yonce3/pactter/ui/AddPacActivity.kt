@@ -1,10 +1,12 @@
 package com.yonce3.pactter.ui
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -28,6 +30,7 @@ import com.yonce3.pactter.R
 import com.yonce3.pactter.data.entity.Pac
 import com.yonce3.pactter.viewModel.AddPacViewModel
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -70,11 +73,9 @@ class AddPacActivity : AppCompatActivity() {
         addPacButton.setOnClickListener {
             // DBに保存
             if (pacText.text.isNotBlank()) {
-//                db.pacDao().insert(Pac(0, pacText.text.toString(), ""))
-//                db.pacDao().insert(Pac(1, pacText.text.toString(), ""))
 
                 // TODO: リストを表示するときは、リモートのDBの画像のパス
-                addPacViewModel.insert(Pac(0, pacText.text.toString(), ""))
+                addPacViewModel.insert(Pac(0, pacText.text.toString(), currentPhotoPath))
                 finish()
             } else {
                 Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()
@@ -119,8 +120,19 @@ class AddPacActivity : AppCompatActivity() {
             when (requestCode) {
                 REQUEST_IMAGE_CAPTURE -> {
                     // TODO: フルサイズの画像を取得する方法
-                    val imageBitmap = data?.extras?.get("data") as Bitmap
-                    photo.setImageBitmap(imageBitmap)
+                    val contentValues = ContentValues().apply {
+                        put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                        put("_data", currentPhotoPath)
+                    }
+                    contentResolver.insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+
+                    val inputStream = FileInputStream(File(currentPhotoPath))
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    photo.setImageBitmap(bitmap)
+                    // val imageBitmap = data?.extras?.get("data") as Bitmap
+                    // photo.setImageBitmap(imageBitmap)
                     photo.visibility = View.VISIBLE
                 }
             }

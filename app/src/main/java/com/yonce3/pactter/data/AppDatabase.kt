@@ -11,7 +11,7 @@ import com.yonce3.pactter.data.entity.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = arrayOf(User::class, Pac::class), version = 1)
+@Database(entities = arrayOf(User::class, Pac::class), version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun pacDao(): PacDao

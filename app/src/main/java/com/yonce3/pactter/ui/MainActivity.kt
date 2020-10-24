@@ -8,13 +8,12 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
-import com.yonce3.pactter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var floatingAddButton: FloatingActionButton
     lateinit var floatingDmButton: FloatingActionButton
 
-    private lateinit var binding: ActivityMainBinding
+    // private lateinit var binding: ActivityMainBinding
 
     val homeFragment =  HomeFragment()
     val searchFragment =  SearchFragment()
@@ -24,9 +23,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+//        binding = ActivityMainBinding.inflate(layoutInflater)
+//        val view = binding.root
+        setContentView(R.layout.activity_main)
 
         // toolbarの設定
         setSupportActionBar(findViewById(R.id.toolbar))
@@ -47,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Pac追加ボタン
-        floatingAddButton = binding.addPacButton
+        floatingAddButton = findViewById(R.id.add_pac_button)
         floatingAddButton.setOnClickListener {
             val intent = Intent(this, AddPacActivity::class.java)
             startActivity(intent)
@@ -56,7 +55,8 @@ class MainActivity : AppCompatActivity() {
         // directMessageButton = findViewById(
 
         // bottomNavigation
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(onBottomNavigationClick)
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigation.setOnNavigationItemSelectedListener(onBottomNavigationClick)
     }
 
     private val onBottomNavigationClick = BottomNavigationView.OnNavigationItemSelectedListener {

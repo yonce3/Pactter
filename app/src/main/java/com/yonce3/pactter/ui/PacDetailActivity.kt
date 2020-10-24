@@ -22,21 +22,27 @@ class PacDetailActivity : AppCompatActivity() {
         intent.getIntExtra("pacId", 0)
     }
 
+    private val viewModel: PacDetailViewModel by lazy {
+        PacDetailViewModel.ViewModelFactory(application, pacId).create(PacDetailViewModel::class.java)
+        PacDetailViewModel.ViewModelFactory(application, pacId).create(PacDetailViewModel::class.java)
+    }
+
     private lateinit var pac: Pac
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityPacDetailBinding>(this, R.layout.activity_pac_detail)
-        binding.lifecycleOwner = this
+        val binding : ActivityPacDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_pac_detail)
+        binding.also {
+            it.lifecycleOwner = this
+            it.viewModel = viewModel
+        }
+
+        // toolbarを設定
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.also {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeButtonEnabled(true)
         }
-
-        // val viewModel = ViewModelProvider.AndroidViewModelFactory(application).create(PacDetailViewModel::class.java)
-        val viewModel = PacDetailViewModel.ViewModelFactory(application, pacId).create(PacDetailViewModel::class.java)
-        binding.viewModel = viewModel
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
