@@ -24,7 +24,6 @@ class PacDetailActivity : AppCompatActivity() {
 
     private val viewModel: PacDetailViewModel by lazy {
         PacDetailViewModel.ViewModelFactory(application, pacId).create(PacDetailViewModel::class.java)
-        PacDetailViewModel.ViewModelFactory(application, pacId).create(PacDetailViewModel::class.java)
     }
 
     private lateinit var pac: Pac

@@ -127,7 +127,6 @@ class AddPacActivity : AppCompatActivity() {
                     contentResolver.insert(
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
 
-
                     val inputStream = FileInputStream(File(currentPhotoPath))
                     val bitmap = BitmapFactory.decodeStream(inputStream)
                     photo.setImageBitmap(bitmap)

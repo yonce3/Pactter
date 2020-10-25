@@ -58,6 +58,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <ImageView
+        android:id="@+id/pac_photo"
+        app:layout_constraintTop_toBottomOf="@id/pac_context"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@{viewModel.pac.imageFilePath}" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

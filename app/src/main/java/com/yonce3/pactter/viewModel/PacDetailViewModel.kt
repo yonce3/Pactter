@@ -5,8 +5,8 @@ import androidx.lifecycle.*
 import com.yonce3.pactter.data.AppDatabase
 import com.yonce3.pactter.data.entity.Pac
 import com.yonce3.pactter.repository.AddPacRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.io.IOException
 
 class PacDetailViewModel(application: Application, pacId: Int) : AndroidViewModel(application) {
 
@@ -15,8 +15,21 @@ class PacDetailViewModel(application: Application, pacId: Int) : AndroidViewMode
 
     init {
         val pacDao = AppDatabase.getDatabase(application, viewModelScope).pacDao()
-        pac = pacDao.findPacWithId(pacId)
         repository = AddPacRepository(pacDao)
+        pac = repository.findPacWithId(pacId)
+
+//        viewModelScope.launch {
+//            try {
+////                coroutineScope {
+//                    // pac = repository.findPacWithId(pacId)
+////                    val pacData: Deferred<LiveData<Pac>> = async {
+////                        repository.findPacWithId(pacId)
+////                    }
+////                    pac = pacData.await()
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            }
+//        }
     }
 
     class ViewModelFactory(private val application: Application, private val pacId: Int): ViewModelProvider.AndroidViewModelFactory(application) {
