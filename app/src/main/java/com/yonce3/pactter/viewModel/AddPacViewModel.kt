@@ -23,8 +23,6 @@ class AddPacViewModel(application: Application) : AndroidViewModel(application) 
         repository.insertPac(pac)
     }
 
-    fun getPacCount(user: User) {
-
-    }
+    fun getPacCount(): Int? = repository.getPacCount()
 
 }

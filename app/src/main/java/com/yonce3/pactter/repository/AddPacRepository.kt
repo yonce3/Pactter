@@ -12,4 +12,6 @@ class AddPacRepository(private val pacDao: PacDao) {
 
     fun findPacWithId(pacId: Int): LiveData<Pac> = pacDao.findPacWithId(pacId)
 
+    fun getPacCount(): Int? = pacDao.getAll().value?.size
+
 }

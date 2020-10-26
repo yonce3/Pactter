@@ -48,7 +48,7 @@ class AddPacActivity : AppCompatActivity() {
     lateinit var photo: ImageView
     val REQUEST_IMAGE_CAPTURE = 1
     val REQUEST_CAMERA_PERMISSION = 2
-    lateinit var currentPhotoPath: String
+    var currentPhotoPath: String = ""
     private lateinit var addPacViewModel: AddPacViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +75,7 @@ class AddPacActivity : AppCompatActivity() {
             if (pacText.text.isNotBlank()) {
 
                 // TODO: リストを表示するときは、リモートのDBの画像のパス
-                addPacViewModel.insert(Pac(0, pacText.text.toString(), currentPhotoPath))
+                addPacViewModel.insert(Pac(addPacViewModel.getPacCount()?.plus(1)!!, pacText.text.toString(), currentPhotoPath))
                 finish()
             } else {
                 Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()
