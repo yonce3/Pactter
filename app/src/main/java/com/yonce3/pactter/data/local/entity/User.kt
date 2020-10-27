@@ -1,4 +1,4 @@
-package com.yonce3.pactter.data.entity
+package com.yonce3.pactter.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

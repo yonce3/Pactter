@@ -1,14 +1,13 @@
 package com.yonce3.pactter
 
 import android.content.Context
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.yonce3.pactter.data.entity.Pac
+import com.yonce3.pactter.data.local.entity.Pac
 
 class PacListViewAdapter(context: Context) : RecyclerView.Adapter<PacListViewAdapter.PacListViewHolder>() {
 

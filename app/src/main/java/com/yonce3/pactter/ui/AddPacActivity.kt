@@ -5,7 +5,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +26,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
-import com.yonce3.pactter.data.entity.Pac
+import com.yonce3.pactter.data.local.entity.Pac
 import com.yonce3.pactter.viewModel.AddPacViewModel
 import java.io.File
 import java.io.FileInputStream
@@ -75,7 +74,7 @@ class AddPacActivity : AppCompatActivity() {
             if (pacText.text.isNotBlank()) {
 
                 // TODO: リストを表示するときは、リモートのDBの画像のパス
-                addPacViewModel.insert(Pac(addPacViewModel.getPacCount()?.plus(1)!!, pacText.text.toString(), currentPhotoPath))
+                addPacViewModel.insert(Pac(0, pacText.text.toString(), currentPhotoPath))
                 finish()
             } else {
                 Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()
@@ -130,8 +129,6 @@ class AddPacActivity : AppCompatActivity() {
                     val inputStream = FileInputStream(File(currentPhotoPath))
                     val bitmap = BitmapFactory.decodeStream(inputStream)
                     photo.setImageBitmap(bitmap)
-                    // val imageBitmap = data?.extras?.get("data") as Bitmap
-                    // photo.setImageBitmap(imageBitmap)
                     photo.visibility = View.VISIBLE
                 }
             }

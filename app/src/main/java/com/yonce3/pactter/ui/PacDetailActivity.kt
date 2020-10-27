@@ -1,18 +1,14 @@
 package com.yonce3.pactter.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.yonce3.pactter.R
-import com.yonce3.pactter.data.entity.Pac
+import com.yonce3.pactter.data.local.entity.Pac
 import com.yonce3.pactter.databinding.ActivityPacDetailBinding
-import com.yonce3.pactter.viewModel.HomeViewModel
 import com.yonce3.pactter.viewModel.PacDetailViewModel
-import kotlinx.coroutines.launch
 
 
 class PacDetailActivity : AppCompatActivity() {
@@ -41,6 +37,16 @@ class PacDetailActivity : AppCompatActivity() {
         supportActionBar?.also {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeButtonEnabled(true)
+        }
+
+        val favoriteButton: ImageView = findViewById(R.id.favorite_button)
+        favoriteButton.setOnClickListener {
+            favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24)
+        }
+
+        val shareButton: ImageView = findViewById(R.id.share_button)
+        shareButton.setOnClickListener {
+
         }
     }
 

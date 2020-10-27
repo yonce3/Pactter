@@ -10,13 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.yonce3.pactter.PacListViewAdapter
 import com.yonce3.pactter.R
-import com.yonce3.pactter.data.AppDatabase
-import com.yonce3.pactter.data.entity.Pac
 import com.yonce3.pactter.util.REQUEST_PAC_DETAIL
-import com.yonce3.pactter.viewModel.AddPacViewModel
 import com.yonce3.pactter.viewModel.HomeViewModel
 
 class HomeFragment : Fragment() {

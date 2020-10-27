@@ -1,6 +1,6 @@
 package com.yonce3.pactter.testUtil
 
-import com.yonce3.pactter.data.entity.User
+import com.yonce3.pactter.data.local.entity.User
 
 class TestUtil {
     companion object {

@@ -1,4 +1,4 @@
-package com.yonce3.pactter.data
+package com.yonce3.pactter.data.local
 
 import androidx.room.*
 
@@ -6,8 +6,8 @@ import android.content.Context
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.yonce3.pactter.data.Dao.PacDao
 import com.yonce3.pactter.data.Dao.UserDao
-import com.yonce3.pactter.data.entity.Pac
-import com.yonce3.pactter.data.entity.User
+import com.yonce3.pactter.data.local.entity.Pac
+import com.yonce3.pactter.data.local.entity.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
