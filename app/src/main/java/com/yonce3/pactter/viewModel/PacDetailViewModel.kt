@@ -3,7 +3,7 @@ package com.yonce3.pactter.viewModel
 import android.app.Application
 import androidx.lifecycle.*
 import com.yonce3.pactter.data.local.AppDatabase
-import com.yonce3.pactter.data.local.entity.Pac
+import com.yonce3.pactter.data.entity.Pac
 import com.yonce3.pactter.repository.AddPacRepository
 
 class PacDetailViewModel(application: Application, pacId: Int) : AndroidViewModel(application) {

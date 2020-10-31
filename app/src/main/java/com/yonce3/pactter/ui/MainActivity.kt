@@ -13,8 +13,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var floatingAddButton: FloatingActionButton
     lateinit var floatingDmButton: FloatingActionButton
 
-    // private lateinit var binding: ActivityMainBinding
-
     val homeFragment =  HomeFragment()
     val searchFragment =  SearchFragment()
     lateinit var transaction: FragmentTransaction

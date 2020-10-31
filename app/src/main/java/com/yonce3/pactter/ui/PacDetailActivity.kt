@@ -6,7 +6,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.yonce3.pactter.R
-import com.yonce3.pactter.data.local.entity.Pac
+import com.yonce3.pactter.data.entity.Pac
 import com.yonce3.pactter.databinding.ActivityPacDetailBinding
 import com.yonce3.pactter.viewModel.PacDetailViewModel
 

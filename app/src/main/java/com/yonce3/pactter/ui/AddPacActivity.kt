@@ -26,7 +26,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
-import com.yonce3.pactter.data.local.entity.Pac
+import com.yonce3.pactter.data.entity.Pac
 import com.yonce3.pactter.viewModel.AddPacViewModel
 import java.io.File
 import java.io.FileInputStream

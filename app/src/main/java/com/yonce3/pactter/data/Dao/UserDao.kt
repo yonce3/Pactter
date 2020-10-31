@@ -2,7 +2,7 @@ package com.yonce3.pactter.data.Dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.yonce3.pactter.data.local.entity.User
+import com.yonce3.pactter.data.entity.User
 
 @Dao
 interface UserDao {
