@@ -4,8 +4,8 @@ import androidx.room.*
 
 import android.content.Context
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.yonce3.pactter.data.Dao.PacDao
-import com.yonce3.pactter.data.Dao.UserDao
+import com.yonce3.pactter.data.local.Dao.PacDao
+import com.yonce3.pactter.data.local.Dao.UserDao
 import com.yonce3.pactter.data.entity.Pac
 import com.yonce3.pactter.data.entity.User
 import kotlinx.coroutines.CoroutineScope

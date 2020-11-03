@@ -6,10 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.yonce3.pactter.data.local.AppDatabase
 import com.yonce3.pactter.data.entity.Pac
-import com.yonce3.pactter.repository.AddPacRepository
+import com.yonce3.pactter.data.repository.AddPacRepository
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
-    // TODO: Implement the ViewModel
     private val repository: AddPacRepository
     val allPacs: LiveData<List<Pac>>
 

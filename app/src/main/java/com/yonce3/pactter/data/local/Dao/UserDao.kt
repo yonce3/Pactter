@@ -1,4 +1,4 @@
-package com.yonce3.pactter.data.Dao
+package com.yonce3.pactter.data.local.Dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yonce3.pactter.PacListViewAdapter
 import com.yonce3.pactter.R
 import com.yonce3.pactter.util.REQUEST_PAC_DETAIL
 import com.yonce3.pactter.viewModel.HomeViewModel
@@ -47,7 +46,7 @@ class HomeFragment : Fragment() {
 
         // リストビューの作成
         layoutManager = LinearLayoutManager(activity)
-        viewAdapter = PacListViewAdapter(context!!)
+        viewAdapter = PacListViewAdapter()
         viewAdapter.setOnItemClickListener(object: PacListViewAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int, pacId: Int) {
                 Toast.makeText(activity!!.applicationContext, "${pacId}がタップされました", Toast.LENGTH_SHORT).show()

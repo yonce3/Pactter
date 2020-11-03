@@ -1,15 +1,15 @@
-package com.yonce3.pactter
+package com.yonce3.pactter.ui
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.yonce3.pactter.R
 import com.yonce3.pactter.data.entity.Pac
 
-class PacListViewAdapter(context: Context) : RecyclerView.Adapter<PacListViewAdapter.PacListViewHolder>() {
+class PacListViewAdapter() : RecyclerView.Adapter<PacListViewAdapter.PacListViewHolder>() {
 
     // リスナー格納変数
     lateinit var listener: OnItemClickListener

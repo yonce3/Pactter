@@ -1,7 +1,7 @@
-package com.yonce3.pactter.repository
+package com.yonce3.pactter.data.repository
 
 import androidx.lifecycle.LiveData
-import com.yonce3.pactter.data.Dao.PacDao
+import com.yonce3.pactter.data.local.Dao.PacDao
 import com.yonce3.pactter.data.entity.Pac
 
 class AddPacRepository(private val pacDao: PacDao) {
