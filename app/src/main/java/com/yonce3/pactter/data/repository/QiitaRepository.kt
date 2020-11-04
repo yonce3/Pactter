@@ -13,7 +13,7 @@ class QiitaRepository() {
         .build()
         .create(QiitaApiInterface::class.java)
 
-    suspend fun getArticles(query: String): Article? {
+    suspend fun getArticles(query: String): List<Article> {
         return service.getArticles(query)
     }
 }

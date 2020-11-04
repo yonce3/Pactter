@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
 
-        // リストビューの作成
+        // リストビューの設定
         layoutManager = LinearLayoutManager(activity)
         viewAdapter = PacListViewAdapter()
         viewAdapter.setOnItemClickListener(object: PacListViewAdapter.OnItemClickListener{
