@@ -48,6 +48,7 @@ class SearchFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         searchView.setOnQueryTextListener(SearchViewListener(viewModel))
+        searchView.setIconifiedByDefault(false)
 
         // リストビューの設定
         layoutManager = LinearLayoutManager(activity)

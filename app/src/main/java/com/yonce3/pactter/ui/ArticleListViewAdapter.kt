@@ -14,8 +14,8 @@ class ArticleListViewAdapter() : RecyclerView.Adapter<ArticleListViewAdapter.Art
     var articles = emptyList<Article>()
     class ArticleListViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val articleImage = view.findViewById<ImageView>(R.id.author_icon)
-        val articleTitle = view.findViewById<TextView>(R.id.qiita_title)
-        val articleContent = view.findViewById<TextView>(R.id.qiita_content)
+        val articleTitle = view.findViewById<TextView>(R.id.article_title)
+        val userName = view.findViewById<TextView>(R.id.user_name)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleListViewHolder {
@@ -25,7 +25,8 @@ class ArticleListViewAdapter() : RecyclerView.Adapter<ArticleListViewAdapter.Art
 
     override fun onBindViewHolder(holder: ArticleListViewHolder, position: Int) {
         holder.articleTitle.text = articles[position].title
-        holder.articleContent.text = articles[position].body
+        holder.userName.text = articles[position].user.name
+        // holder.articleImage.setImageBitmap()
     }
 
     override fun getItemCount(): Int = articles.size

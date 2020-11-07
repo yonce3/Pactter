@@ -11,12 +11,12 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel: ViewModel() {
 
-    var articles: LiveData<List<Article>> = MutableLiveData<List<Article>>()
+    var articles: MutableLiveData<List<Article>> = MutableLiveData<List<Article>>()
     private val qiitaRepository: QiitaRepository = QiitaRepository()
 
     fun searchArticles() {
         viewModelScope.launch(Dispatchers.IO) {
-            //articles = qiitaRepository.getArticles()
+            articles.postValue(qiitaRepository.getArticles(1, 10).body())
         }
     }
 }
