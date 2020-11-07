@@ -1,6 +1,5 @@
 package com.yonce3.pactter.data.repository
 
-import androidx.lifecycle.LiveData
 import com.yonce3.pactter.data.entity.Article
 import com.yonce3.pactter.data.remote.QiitaApiInterface
 import retrofit2.Response
@@ -14,7 +13,7 @@ class QiitaRepository() {
         .build()
         .create(QiitaApiInterface::class.java)
 
-    suspend fun getArticles(page: Int, per_page: Int): Response<List<Article>> {
-        return service.getArticles(page, per_page)
+    suspend fun getArticles(query: String?): Response<List<Article>> {
+        return service.getArticles(query)
     }
 }

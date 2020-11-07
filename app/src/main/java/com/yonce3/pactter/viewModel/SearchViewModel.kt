@@ -14,9 +14,9 @@ class SearchViewModel: ViewModel() {
     var articles: MutableLiveData<List<Article>> = MutableLiveData<List<Article>>()
     private val qiitaRepository: QiitaRepository = QiitaRepository()
 
-    fun searchArticles() {
+    fun searchArticles(query: String?) {
         viewModelScope.launch(Dispatchers.IO) {
-            articles.postValue(qiitaRepository.getArticles(1, 10).body())
+            articles.postValue(qiitaRepository.getArticles(query).body())
         }
     }
 }

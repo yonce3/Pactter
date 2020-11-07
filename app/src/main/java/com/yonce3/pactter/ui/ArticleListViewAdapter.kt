@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.yonce3.pactter.R
 import com.yonce3.pactter.data.entity.Article
 
@@ -26,7 +27,7 @@ class ArticleListViewAdapter() : RecyclerView.Adapter<ArticleListViewAdapter.Art
     override fun onBindViewHolder(holder: ArticleListViewHolder, position: Int) {
         holder.articleTitle.text = articles[position].title
         holder.userName.text = articles[position].user.name
-        // holder.articleImage.setImageBitmap()
+        holder.articleImage.load(articles[position].user.profile_image_url)
     }
 
     override fun getItemCount(): Int = articles.size

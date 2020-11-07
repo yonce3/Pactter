@@ -11,8 +11,7 @@ interface QiitaApiInterface {
 
     @GET("/api/v2/items")
     suspend fun getArticles(
-        @Query("page") page: Int,
-        @Query("per_page") per_page: Int
+        @Query("query") query: String?
     ): Response<List<Article>>
 
 }
