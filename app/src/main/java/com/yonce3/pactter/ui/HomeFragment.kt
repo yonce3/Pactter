@@ -44,6 +44,9 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
 
+        // toolbarの設定
+        
+
         // リストビューの設定
         layoutManager = LinearLayoutManager(activity)
         viewAdapter = PacListViewAdapter()

@@ -97,16 +97,7 @@ class AddPacActivity : AppCompatActivity() {
             if (cameraPermission == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
             } else if (cameraRationale) {
-                AlertDialog.Builder(this)
-                    .setMessage("デバイスの「設定」でカメラの権限を許可してください。")
-                    .setPositiveButton("OK") { _, _ ->
-                        // TODO: アプリの設定画面に遷移
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:com.yonce3.pactter"))
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
-                    }
-                    .setNegativeButton("キャンセル") {_, _ -> }
-                    .create().show()
+                showRequestCameraPermission()
             } else {
                 ActivityCompat.requestPermissions(
                     this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSION)
@@ -183,5 +174,17 @@ class AddPacActivity : AppCompatActivity() {
             // Save a file: path for use with ACTION_VIEW intents
             currentPhotoPath = absolutePath
         }
+    }
+
+    private fun showRequestCameraPermission() {
+        AlertDialog.Builder(this)
+            .setMessage("デバイスの「設定」でカメラの権限を許可してください。")
+            .setPositiveButton("OK") { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:com.yonce3.pactter"))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+            .setNegativeButton("キャンセル") {_, _ -> }
+            .create().show()
     }
 }
