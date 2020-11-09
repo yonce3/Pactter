@@ -12,6 +12,6 @@ interface QiitaApiInterface {
     @GET("/api/v2/items")
     suspend fun getArticles(
         @Query("query") query: String?
-    ): Response<List<Article>>
+    ): Call<List<Article>>
 
 }

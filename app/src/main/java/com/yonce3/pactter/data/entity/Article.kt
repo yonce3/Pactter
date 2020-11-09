@@ -6,6 +6,10 @@ data class Article (
     val user: QiitaUser,
 )
 
+data class Articles (
+    val articles: List<Article>
+)
+
 data class QiitaUser (
     val id: String,
     val name: String,

@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
         setHasOptionsMenu(true)
 
         // toolbarの設定
-        
+
 
         // リストビューの設定
         layoutManager = LinearLayoutManager(activity)
