@@ -26,8 +26,8 @@ class ArticleListViewAdapter() : RecyclerView.Adapter<ArticleListViewAdapter.Art
 
     override fun onBindViewHolder(holder: ArticleListViewHolder, position: Int) {
         holder.articleTitle.text = articles[position].title
-        holder.userName.text = articles[position].user.name
-        holder.articleImage.load(articles[position].user.profile_image_url)
+//        holder.userName.text = articles[position].user.name
+//        holder.articleImage.load(articles[position].user.profile_image_url)
     }
 
     override fun getItemCount(): Int = articles.size

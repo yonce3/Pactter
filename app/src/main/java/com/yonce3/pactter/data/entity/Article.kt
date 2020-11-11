@@ -1,13 +1,11 @@
 package com.yonce3.pactter.data.entity
 
+import com.squareup.moshi.Json
+
 data class Article (
     val id: String,
     val title: String,
-    val user: QiitaUser,
-)
-
-data class Articles (
-    val articles: List<Article>
+    @Json(name = "user") val user: QiitaUser,
 )
 
 data class QiitaUser (

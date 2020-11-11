@@ -13,5 +13,4 @@ interface QiitaApiInterface {
     suspend fun getArticles(
         @Query("query") query: String?
     ): Call<List<Article>>
-
 }
