@@ -9,8 +9,8 @@ import retrofit2.http.Query
 
 interface QiitaApiInterface {
 
-    @GET("/api/v2/items")
-    suspend fun getArticles(
+    @GET("items")
+    fun getArticles(
         @Query("query") query: String?
     ): Call<List<Article>>
 }

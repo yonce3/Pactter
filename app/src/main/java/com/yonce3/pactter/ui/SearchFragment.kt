@@ -65,12 +65,14 @@ class SearchFragment : Fragment() {
     }
 
     class SearchViewListener(val viewModel: SearchViewModel): OnQueryTextListener {
-        override fun onQueryTextChange(newText: String?): Boolean {
-            viewModel.searchArticles(newText)
+        override fun onQueryTextChange(newText: String): Boolean {
+            if (newText.isNotEmpty()) {
+                viewModel.searchArticles(newText)
+            }
             return false
         }
 
-        override fun onQueryTextSubmit(query: String?): Boolean {
+        override fun onQueryTextSubmit(query: String): Boolean {
             viewModel.searchArticles(query)
             return false
         }

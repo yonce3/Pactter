@@ -11,19 +11,19 @@ import java.io.IOException
 
 class QiitaRepository() {
 
-    private var service: QiitaApiInterface = Retrofit.Builder()
-        .baseUrl("https://qiita.com")
-        .addConverterFactory(MoshiConverterFactory.create())
-//            Moshi.Builder().add(
-//                KotlinJsonAdapterFactory()
-//            ).build()
-//        ))
-        .build()
-        .create(QiitaApiInterface::class.java)
+    lateinit var service: QiitaApiInterface
+    init {
+        var moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        service = Retrofit.Builder()
+            .baseUrl("https://qiita.com/api/v2/")
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+            .create(QiitaApiInterface::class.java)
+    }
 
-    suspend fun getArticles(query: String?): List<Article>? {
-        val response = service.getArticles(query).execute()
+    fun getArticles(query: String?): List<Article>? {
         try {
+            val response = service.getArticles(query).execute()
             if (response.isSuccessful) {
                 return response.body()
             } else {
