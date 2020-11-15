@@ -27,7 +27,7 @@ class QiitaRepository() {
             if (response.isSuccessful) {
                 return response.body()
             } else {
-                Log.d("QiitaRepository", "GET ERROR")
+                Log.d("QiitaRepository", "Get Error")
             }
         } catch (e: IOException) {
             e.printStackTrace()

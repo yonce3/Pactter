@@ -5,21 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yonce3.pactter.R
+import com.yonce3.pactter.databinding.FragmentSearchBinding
 import com.yonce3.pactter.viewModel.SearchViewModel
 
 class SearchFragment : Fragment() {
 
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: ArticleListViewAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var searchView: SearchView
+    private lateinit var binding: FragmentSearchBinding
 
     private val viewModel: SearchViewModel by lazy {
         activity?.run {
@@ -37,43 +35,56 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        searchView = view.findViewById(R.id.search_view)
+        // data binding
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
 
-        return view
+        // searchViewの設定
+        binding.searchView.also {
+            it.setOnQueryTextListener(SearchViewListener(viewModel, binding.root))
+            it.setIconifiedByDefault(false)
+        }
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        searchView.setOnQueryTextListener(SearchViewListener(viewModel))
-        searchView.setIconifiedByDefault(false)
+        // data bindingの追加
+        binding.also {
+            it.lifecycleOwner = this
+            it.viewModel = viewModel
+        }
 
         // リストビューの設定
         layoutManager = LinearLayoutManager(activity)
         viewAdapter = ArticleListViewAdapter()
 
         viewModel.articles.observe(viewLifecycleOwner, Observer { it ->
-            it?.let { viewAdapter.setArticles(it) }
+            it?.let {
+                viewAdapter.setArticles(it)
+                binding.progressBar.visibility = View.GONE
+            }
         })
 
-        recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView).also {
+        binding.recyclerView.also {
             it.layoutManager = layoutManager
             it.adapter = viewAdapter
         }
     }
 
-    class SearchViewListener(val viewModel: SearchViewModel): OnQueryTextListener {
+    class SearchViewListener(val viewModel: SearchViewModel, val view: View): OnQueryTextListener {
         override fun onQueryTextChange(newText: String): Boolean {
-            if (newText.isNotEmpty()) {
-                viewModel.searchArticles(newText)
-            }
             return false
         }
 
         override fun onQueryTextSubmit(query: String): Boolean {
-            viewModel.searchArticles(query)
+            if (query.isNotBlank()) {
+                viewModel.searchArticles(query)
+            } else {
+                viewModel.clearArticles()
+            }
             return false
         }
     }
