@@ -1,10 +1,13 @@
 package com.yonce3.pactter.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.yonce3.pactter.R
@@ -17,6 +20,10 @@ class ArticleListViewAdapter() : RecyclerView.Adapter<ArticleListViewAdapter.Art
         val articleImage = view.findViewById<ImageView>(R.id.author_icon)
         val articleTitle = view.findViewById<TextView>(R.id.article_title)
         val userName = view.findViewById<TextView>(R.id.user_name)
+
+        interface OnClickListener: View.OnClickListener {
+            fun onItemClick(url: Uri)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleListViewHolder {
@@ -28,6 +35,12 @@ class ArticleListViewAdapter() : RecyclerView.Adapter<ArticleListViewAdapter.Art
         holder.articleTitle.text = articles[position].title
         holder.userName.text = articles[position].user.name
         holder.articleImage.load(articles[position].user.profile_image_url)
+
+        holder.itemView.setOnClickListener { it ->
+            val uri = articles[position].url.toUri()
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            it.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int = articles.size

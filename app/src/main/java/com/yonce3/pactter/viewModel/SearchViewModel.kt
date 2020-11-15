@@ -1,7 +1,6 @@
 package com.yonce3.pactter.viewModel
 
 import android.view.View
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,7 +26,6 @@ class SearchViewModel: ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             articles.postValue(qiitaRepository.getArticles(query))
         }
-        //progressBarVisibility.postValue(View.GONE)
     }
 
     fun clearArticles() {
