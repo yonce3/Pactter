@@ -20,10 +20,6 @@ class ArticleListViewAdapter() : RecyclerView.Adapter<ArticleListViewAdapter.Art
         val articleImage = view.findViewById<ImageView>(R.id.author_icon)
         val articleTitle = view.findViewById<TextView>(R.id.article_title)
         val userName = view.findViewById<TextView>(R.id.user_name)
-
-        interface OnClickListener: View.OnClickListener {
-            fun onItemClick(url: Uri)
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleListViewHolder {

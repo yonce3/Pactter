@@ -3,9 +3,11 @@ package com.yonce3.pactter.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.yonce3.pactter.R
 import com.yonce3.pactter.data.entity.Pac
 
@@ -16,13 +18,14 @@ class PacListViewAdapter() : RecyclerView.Adapter<PacListViewAdapter.PacListView
     var pacs = emptyList<Pac>() // Cached copy of words
 
     class PacListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val listItemContainer = view.findViewById<RelativeLayout>(R.id.list_item_container)
         val pacContent = view.findViewById<TextView>(R.id.contents)
+        val pacImage = view.findViewById<ImageView>(R.id.pac_image)
     }
 
 
     override fun onBindViewHolder(holder: PacListViewHolder, position: Int) {
         holder.pacContent.text = pacs[position].content
+        holder.pacImage.load(pacs[position].imageFilePath)
         holder.itemView.setOnClickListener {
             listener.onItemClick(it, position, pacs[position].pacId)
         }

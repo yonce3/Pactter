@@ -38,6 +38,7 @@
             android:layout_toRightOf="@id/icon_image"/>
 
         <ImageView
+            android:id="@+id/pac_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/contents"

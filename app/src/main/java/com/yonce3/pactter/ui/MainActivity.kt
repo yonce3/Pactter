@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
+import com.yonce3.pactter.util.REQUEST_ADD_PAC
 
 class MainActivity : AppCompatActivity() {
     lateinit var floatingAddButton: FloatingActionButton
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         floatingAddButton = findViewById(R.id.add_pac_button)
         floatingAddButton.setOnClickListener {
             val intent = Intent(this, AddPacActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_ADD_PAC)
         }
 
         // directMessageButton = findViewById(
@@ -100,4 +101,14 @@ class MainActivity : AppCompatActivity() {
             else -> false
         }
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (resultCode == RESULT_OK) {
+//            when (requestCode) {
+//                REQUEST_ADD_PAC ->
+//            }
+//        }
+//    }
 }
