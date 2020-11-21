@@ -75,14 +75,7 @@ class AddPacActivity : AppCompatActivity() {
         addPacButton = findViewById(R.id.add_pac_button)
         addPacButton.setOnClickListener {
             // DBに保存
-            if (pacText.text.isNotBlank()) {
-
-                // TODO: リストを表示するときは、リモートのDBの画像のパス
-                addPacViewModel.insert(Pac(0, pacText.text.toString(), currentPhotoPath))
-                finish()
-            } else {
-                Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()
-            }
+            savePack(pacText.text.toString())
         }
 
         backButton = findViewById(R.id.buck_button)
@@ -131,19 +124,19 @@ class AddPacActivity : AppCompatActivity() {
                     val imageUri: Uri = contentResolver.insert(externalStorageUri, contentValues)!!
 
                     contentResolver.openOutputStream(imageUri).use { out ->
-                        val bitmap .compress(Bitmap.CompressFormat.JPEG, 90, out)
+                        // val bitmap .compress(Bitmap.CompressFormat.JPEG, 90, out)
                     }
 
                     contentValues.clear()
                     contentValues.put(MediaStore.Images.Media.IS_PENDING, false)
                     contentResolver.update(imageUri, contentValues, null, null)
 
-                    val bitmap =BitmapFactory.
+                    //val bitmap =BitmapFactory.
                     val inputStream = contentResolver.openOutputStream(imageUri).use { out ->
-                        
+
                     }
-                    val bitmap: Bitmap = BitmapFactory.
-                    photo.setImageBitmap(bitmap)
+//                    val bitmap: Bitmap = BitmapFactory.
+//                    photo.setImageBitmap(bitmap)
                     photo.visibility = View.VISIBLE
                 }
             }
@@ -210,5 +203,16 @@ class AddPacActivity : AppCompatActivity() {
             }
             .setNegativeButton("キャンセル") {_, _ -> }
             .create().show()
+    }
+
+    fun savePack(pacText: String): Boolean {
+        if (pacText.isNotBlank()) {
+            addPacViewModel.insert(Pac(0, pacText, currentPhotoPath))
+            finish()
+            return true
+        } else {
+            Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()
+            return false
+        }
     }
 }

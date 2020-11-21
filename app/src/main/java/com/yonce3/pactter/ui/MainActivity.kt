@@ -23,8 +23,7 @@ class MainActivity : AppCompatActivity() {
     val homeFragment =  HomeFragment()
     val searchFragment =  SearchFragment()
     lateinit var transaction: FragmentTransaction
-    // lateinit var notificationFragment: NotificationFragment
-    // lateinit var
+    // var notificationFragment　= NotificationFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
