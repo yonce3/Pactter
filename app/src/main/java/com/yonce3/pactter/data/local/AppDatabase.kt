@@ -51,8 +51,6 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(pacDao: PacDao) {
-
-            // TODO: Add your own words!
         }
     }
 }
