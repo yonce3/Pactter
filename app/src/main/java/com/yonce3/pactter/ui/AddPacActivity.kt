@@ -1,16 +1,20 @@
 package com.yonce3.pactter.ui
 
 import android.Manifest
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.MediaStore.MediaColumns.DISPLAY_NAME
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -71,14 +75,7 @@ class AddPacActivity : AppCompatActivity() {
         addPacButton = findViewById(R.id.add_pac_button)
         addPacButton.setOnClickListener {
             // DBに保存
-            if (pacText.text.isNotBlank()) {
-
-                // TODO: リストを表示するときは、リモートのDBの画像のパス
-                addPacViewModel.insert(Pac(0, pacText.text.toString(), currentPhotoPath))
-                finish()
-            } else {
-                Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()
-            }
+            savePack(pacText.text.toString())
         }
 
         backButton = findViewById(R.id.buck_button)
@@ -109,17 +106,37 @@ class AddPacActivity : AppCompatActivity() {
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 REQUEST_IMAGE_CAPTURE -> {
-                    // TODO: フルサイズの画像を取得する方法
+                    // TODO: フォトアプリに画像を保存する方法
                     val contentValues = ContentValues().apply {
                         put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            put(MediaStore.Images.Media.RELATIVE_PATH, "Picture/sample")
+                            put(MediaStore.Images.Media.IS_PENDING, true)
+                        }
                         put("_data", currentPhotoPath)
                     }
-                    contentResolver.insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                    val externalStorageUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+                    } else {
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    }
 
-                    val inputStream = FileInputStream(File(currentPhotoPath))
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    photo.setImageBitmap(bitmap)
+                    val imageUri: Uri = contentResolver.insert(externalStorageUri, contentValues)!!
+
+                    contentResolver.openOutputStream(imageUri).use { out ->
+                        // val bitmap .compress(Bitmap.CompressFormat.JPEG, 90, out)
+                    }
+
+                    contentValues.clear()
+                    contentValues.put(MediaStore.Images.Media.IS_PENDING, false)
+                    contentResolver.update(imageUri, contentValues, null, null)
+
+                    //val bitmap =BitmapFactory.
+                    val inputStream = contentResolver.openOutputStream(imageUri).use { out ->
+
+                    }
+//                    val bitmap: Bitmap = BitmapFactory.
+//                    photo.setImageBitmap(bitmap)
                     photo.visibility = View.VISIBLE
                 }
             }
@@ -186,5 +203,16 @@ class AddPacActivity : AppCompatActivity() {
             }
             .setNegativeButton("キャンセル") {_, _ -> }
             .create().show()
+    }
+
+    fun savePack(pacText: String): Boolean {
+        if (pacText.isNotBlank()) {
+            addPacViewModel.insert(Pac(0, pacText, currentPhotoPath))
+            finish()
+            return true
+        } else {
+            Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()
+            return false
+        }
     }
 }

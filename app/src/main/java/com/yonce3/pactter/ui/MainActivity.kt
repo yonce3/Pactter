@@ -1,14 +1,20 @@
 package com.yonce3.pactter.ui
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
 import com.yonce3.pactter.util.REQUEST_ADD_PAC
+import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
     lateinit var floatingAddButton: FloatingActionButton
@@ -17,8 +23,7 @@ class MainActivity : AppCompatActivity() {
     val homeFragment =  HomeFragment()
     val searchFragment =  SearchFragment()
     lateinit var transaction: FragmentTransaction
-    // lateinit var notificationFragment: NotificationFragment
-    // lateinit var
+    // var notificationFragment　= NotificationFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +50,13 @@ class MainActivity : AppCompatActivity() {
         // Pac追加ボタン
         floatingAddButton = findViewById(R.id.add_pac_button)
         floatingAddButton.setOnClickListener {
-            val intent = Intent(this, AddPacActivity::class.java)
-            startActivityForResult(intent, REQUEST_ADD_PAC)
+            // TODO: アプリへの権限を確認
+            if (true) {
+                val intent = Intent(this, AddPacActivity::class.java)
+                startActivityForResult(intent, REQUEST_ADD_PAC)
+            } else {
+                requestExternalStorageWritable()
+            }
         }
 
         // directMessageButton = findViewById(
@@ -99,6 +109,28 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             else -> false
+        }
+    }
+
+    // 端末のストレージの書き込み権限を確認する
+    private fun requestExternalStorageWritable() {
+        //ExternalStorageAuthority.
+    }
+
+    class ExternalStorageAuthority() : DialogFragment() {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            val builder = AlertDialog.Builder(context)
+            builder.also {
+//                it.setMessage("デバイス内の写真、メディア、ファイルへのアクセス")
+//                it.setTitle()
+                it.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
+
+                })
+                it.setNegativeButton("キャンセル", DialogInterface.OnClickListener { dialog, which ->
+                    
+                })
+            }
+            return super.onCreateDialog(savedInstanceState)
         }
     }
 
