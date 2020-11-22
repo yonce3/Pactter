@@ -31,15 +31,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
 import com.yonce3.pactter.data.entity.Pac
+import com.yonce3.pactter.util.ShowToast
 import com.yonce3.pactter.viewModel.AddPacViewModel
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 class AddPacActivity : AppCompatActivity() {
 
+    @Inject lateinit var showToast: ShowToast
     companion object {
         const val TAG = "AddPacActivity"
     }
@@ -59,6 +62,8 @@ class AddPacActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_pac)
 
         addPacViewModel = ViewModelProvider.AndroidViewModelFactory(application).create(AddPacViewModel::class.java)
+
+        // Dagger2の初期化
 
         pacText = findViewById(R.id.edit_text)
         // pacText.requestFocus()
@@ -92,7 +97,14 @@ class AddPacActivity : AppCompatActivity() {
                 Manifest.permission.CAMERA
             )
             if (cameraPermission == PackageManager.PERMISSION_GRANTED) {
-                startCamera()
+                val storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                if (storagePermission == PackageManager.PERMISSION_GRANTED) {
+                    startCamera()
+                    // startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_IMAGE_CAPTURE)
+                } else {
+                    ActivityCompat.requestPermissions(
+                        this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 2)
+                }
             } else if (cameraRationale) {
                 showRequestCameraPermission()
             } else {
@@ -108,12 +120,14 @@ class AddPacActivity : AppCompatActivity() {
                 REQUEST_IMAGE_CAPTURE -> {
                     // TODO: フォトアプリに画像を保存する方法
                     val contentValues = ContentValues().apply {
+                        // マイムの設定
                         put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                        put(MediaStore.Images.Media.DISPLAY_NAME, "Paccter_photo.jpg")
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            put(MediaStore.Images.Media.RELATIVE_PATH, "Picture/sample")
+                            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Pactter")
+                            // 書き込み時に、メディアへのアクセスを排他制御する
                             put(MediaStore.Images.Media.IS_PENDING, true)
                         }
-                        put("_data", currentPhotoPath)
                     }
                     val externalStorageUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
@@ -123,20 +137,18 @@ class AddPacActivity : AppCompatActivity() {
 
                     val imageUri: Uri = contentResolver.insert(externalStorageUri, contentValues)!!
 
+                    val imageBitmap = BitmapFactory.decodeFile(currentPhotoPath)
                     contentResolver.openOutputStream(imageUri).use { out ->
-                        // val bitmap .compress(Bitmap.CompressFormat.JPEG, 90, out)
+                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
                     }
 
                     contentValues.clear()
                     contentValues.put(MediaStore.Images.Media.IS_PENDING, false)
                     contentResolver.update(imageUri, contentValues, null, null)
 
-                    //val bitmap =BitmapFactory.
-                    val inputStream = contentResolver.openOutputStream(imageUri).use { out ->
-
-                    }
-//                    val bitmap: Bitmap = BitmapFactory.
-//                    photo.setImageBitmap(bitmap)
+//                    val inputStream = FileInputStream(File(currentPhotoPath))
+//                    val bitmap =BitmapFactory.decodeStream(inputStream)
+                    photo.setImageBitmap(imageBitmap)
                     photo.visibility = View.VISIBLE
                 }
             }
@@ -148,11 +160,13 @@ class AddPacActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
+                //startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_IMAGE_CAPTURE)
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    // TODO: 外部ストレージ内に保存する場合
     private fun startCamera() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(packageManager)?.also {
@@ -184,7 +198,7 @@ class AddPacActivity : AppCompatActivity() {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
+            "Paccter_${timeStamp}_", /* prefix */
             ".jpg", /* suffix */
             storageDir /* directory */
         ).apply {
@@ -205,14 +219,31 @@ class AddPacActivity : AppCompatActivity() {
             .create().show()
     }
 
+    private fun showRequestStoragePermission() {
+        AlertDialog.Builder(this)
+            .setMessage("デバイスの「設定」でストレージの権限を許可してください。")
+            .setPositiveButton("OK") { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:com.yonce3.pactter"))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+            .setNegativeButton("キャンセル") {_, _ -> }
+            .create().show()
+    }
+
     fun savePack(pacText: String): Boolean {
         if (pacText.isNotBlank()) {
             addPacViewModel.insert(Pac(0, pacText, currentPhotoPath))
             finish()
             return true
         } else {
-            Toast.makeText(this, R.string.input_text_alert, Toast.LENGTH_SHORT).show()
+            showToast.show(this, R.string.input_text_alert, Toast.LENGTH_SHORT)
             return false
         }
+    }
+
+    fun isExternalStorageWritable(): Boolean {
+        var state = Environment.getExternalStorageState()
+        return (Environment.MEDIA_MOUNTED.equals(state))
     }
 }

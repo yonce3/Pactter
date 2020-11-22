@@ -4,14 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.yonce3.pactter.R
 import com.yonce3.pactter.data.entity.Pac
 
-class PacListViewAdapter() : RecyclerView.Adapter<PacListViewAdapter.PacListViewHolder>() {
+class PacListViewAdapter : RecyclerView.Adapter<PacListViewAdapter.PacListViewHolder>() {
 
     // リスナー格納変数
     lateinit var listener: OnItemClickListener

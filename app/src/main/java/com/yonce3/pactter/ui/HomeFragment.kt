@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yonce3.pactter.R
 import com.yonce3.pactter.util.REQUEST_PAC_DETAIL
+import com.yonce3.pactter.util.ShowToast
 import com.yonce3.pactter.viewModel.HomeViewModel
 
 class HomeFragment : Fragment() {
@@ -52,6 +53,7 @@ class HomeFragment : Fragment() {
         viewAdapter = PacListViewAdapter()
         viewAdapter.setOnItemClickListener(object: PacListViewAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int, pacId: Int) {
+                val showToast = ShowToast()
                 Toast.makeText(activity!!.applicationContext, "${pacId}がタップされました", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(activity, PacDetailActivity::class.java)

@@ -11,7 +11,7 @@ import java.io.IOException
 
 class QiitaRepository() {
 
-    lateinit var service: QiitaApiInterface
+    private var service: QiitaApiInterface
     init {
         var moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         service = Retrofit.Builder()
