@@ -56,6 +56,8 @@ class AddPacActivity : AppCompatActivity() {
     val REQUEST_CAMERA_PERMISSION = 2
     var currentPhotoPath: String = ""
     private lateinit var addPacViewModel: AddPacViewModel
+    lateinit var imageUri: Uri
+    lateinit var contentValues: ContentValues
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,8 +101,8 @@ class AddPacActivity : AppCompatActivity() {
             if (cameraPermission == PackageManager.PERMISSION_GRANTED) {
                 val storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (storagePermission == PackageManager.PERMISSION_GRANTED) {
-                    startCamera()
-                    // startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_IMAGE_CAPTURE)
+                    // startCamera()
+                    startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_IMAGE_CAPTURE)
                 } else {
                     ActivityCompat.requestPermissions(
                         this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 2)
@@ -119,10 +121,10 @@ class AddPacActivity : AppCompatActivity() {
             when (requestCode) {
                 REQUEST_IMAGE_CAPTURE -> {
                     // TODO: フォトアプリに画像を保存する方法
-                    val contentValues = ContentValues().apply {
+                    contentValues = ContentValues().apply {
                         // マイムの設定
                         put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                        put(MediaStore.Images.Media.DISPLAY_NAME, "Paccter_photo.jpg")
+                        put(MediaStore.Images.Media.DISPLAY_NAME, "Pactter_photo.jpg")
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                             put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Pactter")
                             // 書き込み時に、メディアへのアクセスを排他制御する
@@ -134,8 +136,7 @@ class AddPacActivity : AppCompatActivity() {
                     } else {
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                     }
-
-                    val imageUri: Uri = contentResolver.insert(externalStorageUri, contentValues)!!
+                    imageUri = contentResolver.insert(externalStorageUri, contentValues)!!
 
                     val imageBitmap = BitmapFactory.decodeFile(currentPhotoPath)
                     contentResolver.openOutputStream(imageUri).use { out ->
@@ -146,8 +147,6 @@ class AddPacActivity : AppCompatActivity() {
                     contentValues.put(MediaStore.Images.Media.IS_PENDING, false)
                     contentResolver.update(imageUri, contentValues, null, null)
 
-//                    val inputStream = FileInputStream(File(currentPhotoPath))
-//                    val bitmap =BitmapFactory.decodeStream(inputStream)
                     photo.setImageBitmap(imageBitmap)
                     photo.visibility = View.VISIBLE
                 }
@@ -160,7 +159,7 @@ class AddPacActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
-                //startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_IMAGE_CAPTURE)
+                startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_IMAGE_CAPTURE)
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -169,7 +168,6 @@ class AddPacActivity : AppCompatActivity() {
     // TODO: 外部ストレージ内に保存する場合
     private fun startCamera() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(packageManager)?.also {
                 // Create the File where the photo should go
                 val photoFile: File? = try {
                     createImageFile()
@@ -183,12 +181,10 @@ class AddPacActivity : AppCompatActivity() {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         this,
                         "com.example.pactter.fileprovider",
-                        it
-                    )
+                        it)
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
-            }
         }
     }
 
@@ -196,7 +192,23 @@ class AddPacActivity : AppCompatActivity() {
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        contentValues = ContentValues().apply {
+            // マイムの設定
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            //put(MediaStore.Images.Media.DISPLAY_NAME, "Pactter_photo.jpg")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Pactter")
+                // 書き込み時に、メディアへのアクセスを排他制御する
+                put(MediaStore.Images.Media.IS_PENDING, true)
+            }
+        }
+        val externalStorageUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        } else {
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        }
+        imageUri = contentResolver.insert(externalStorageUri, contentValues)!!
+        val storageDir: File? = File(MediaStore.Images.Media.RELATIVE_PATH)
         return File.createTempFile(
             "Paccter_${timeStamp}_", /* prefix */
             ".jpg", /* suffix */
