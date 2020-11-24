@@ -31,6 +31,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yonce3.pactter.R
 import com.yonce3.pactter.data.entity.Pac
+import com.yonce3.pactter.util.FileUtil
 import com.yonce3.pactter.util.ShowToast
 import com.yonce3.pactter.viewModel.AddPacViewModel
 import java.io.File
@@ -102,6 +103,10 @@ class AddPacActivity : AppCompatActivity() {
                 val storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (storagePermission == PackageManager.PERMISSION_GRANTED) {
                     // startCamera()
+                    val tempFile = FileUtil().createOutputFile(this)
+                    currentPhotoPath = tempFile.absolutePath
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, FileUtil().createTempUri(tempFile, this))
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_IMAGE_CAPTURE)
                 } else {
                     ActivityCompat.requestPermissions(
@@ -137,6 +142,7 @@ class AddPacActivity : AppCompatActivity() {
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                     }
                     imageUri = contentResolver.insert(externalStorageUri, contentValues)!!
+                    println("bbb" + currentPhotoPath)
 
                     val imageBitmap = BitmapFactory.decodeFile(currentPhotoPath)
                     contentResolver.openOutputStream(imageUri).use { out ->
@@ -158,7 +164,11 @@ class AddPacActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startCamera()
+                //startCamera()
+                val fileUtil = FileUtil()
+                currentPhotoPath = fileUtil.createOutputFile(this).path
+                //intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUtil.createTempUri(this))
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUEST_IMAGE_CAPTURE)
             }
         }
@@ -166,27 +176,27 @@ class AddPacActivity : AppCompatActivity() {
     }
 
     // TODO: 外部ストレージ内に保存する場合
-    private fun startCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (ex: IOException) {
-                    // Error occurred while creating the File
-                    Log.e(TAG, " Error occurred while creating the File: createImageFile() AddPac")
-                    null
-                }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        this,
-                        "com.example.pactter.fileprovider",
-                        it)
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-        }
-    }
+//    private fun startCamera() {
+//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+//                // Create the File where the photo should go
+//                val photoFile: File? = try {
+//                    createImageFile()
+//                } catch (ex: IOException) {
+//                    // Error occurred while creating the File
+//                    Log.e(TAG, " Error occurred while creating the File: createImageFile() AddPac")
+//                    null
+//                }
+//                // Continue only if the File was successfully created
+//                photoFile?.also {
+//                    val photoURI: Uri = FileProvider.getUriForFile(
+//                        this,
+//                        "com.example.pactter.fileprovider",
+//                        it)
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+//                }
+//        }
+//    }
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
